@@ -1,0 +1,30 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
+<div class="container pt-5">
+   <div class="jumbotron">
+      <div class="container-fulid m-3">
+         <h4>新規登録</h4>
+         <form method="POST">
+            {% csrf_token %}
+            {% for field in form.visible_fields %}
+               <div class="form-group">
+                  <label>{{ field.label }}</label>
+                  {{ field }}
+                  {{ field.errors }}
+                  {{ field.help_text }}
+               </div>
+            {% endfor %}
+            {% for field in form.hedden_fields %}
+               {{ field }}
+            {% endfor %}
+            <div class="pt-4">
+               <input type="submit" class="btn btn-primary btn-block" value="新規登録"></button>
+            </div>
+            <div>
+               <a href="{% url 'accounts:login' %}">既にアカウントを持っている方<a>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>   
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
+<div class="container pt-5">
+   <div class="jumbotron">
+      <div class="container-fulid m-3">
+            <h4>プロフィール作成画面</h4>
+         <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form.visible_fields %}
+               <div class="form-group">
+                  <label>{{ field.label }}</label>
+                  {{ field }}
+                  {{ field.errors }}
+                  {{ field.help_text }}
+               </div>
+            {% endfor %}
+            {% for field in form.hedden_fields %}
+               {{ field }}
+            {% endfor %}
+            <div class="pt-4">
+               <input type="submit" class="btn btn-primary btn-block" value="プロフィール作成">
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block content %}
+{% comment %} <div class="pt-4 mb-4 pb-5">
+    <div>
+        <div class="row">
+            <div class="col-2 pl-5">
+                <img src="{{ profile.picture.url }}" width="64px" height="64px">
+            </div>
+            <div class="col-2">
+                投稿数
+                {{ boards_num }}
+            </div>
+            <div class="col-2">
+                <a class="" href="{% url 'users:follow' author_username %}">フォロー</a>
+            </div>
+            <div class="col-2">
+                フォロワー
+                {{ follower_num }}
+            </div>
+            <div class="col-2">
+                フォロー
+                {{ follow_num }}
+            </div>
+        </div>
+        <div class="ml-5">
+            <div class="text-secondary ml-5 mt-2">
+                
+            </div>
+                </div>
+            </div>
+        </div>
+        <div class="pl-5">
+            <p>{{ profile.nickname }}</p>
+            <p>{{ profile.introduction }}</p>
+        </div>
+    </div>
+    <hr>
+    <div class="container mb-5 pb-5">
+        {% for board in boards %}
+        <div class="">
+            <img src="{{ board.boards_picture.url }}" class="float-left img-thumbnail text-align:left;" width="200px" height="200px">
+        </div>
+        {% endfor %}
+    </div>
+</div> {% endcomment %}
+<div class="profile-wrapper">
+  <div class="profile">
+    <div class="profile-img">
+      <img src="{{ profile.picture.url }}">
+    </div>
+    <div class="profile-comment">
+      <h3>{{ profile.nickname }}</h3>
+      <p>{{ profile.introduction }}</p>
+    </div>
+  </div>
+</div>
+<div class="status-wrapper">
+  <div class="status-container">
+    <div class="follow-action">
+      {% if "self" == follow %}
+        <h5>　　　　　　</h5>
+      {% elif "followed" == follow %}
+        <h5><a class="" href="{% url 'users:clear_follow' author_username %}">フォローを解除</a></h5>
+      {% elif "follow" == follow %}
+        <h5><a class="" href="{% url 'users:follow' author_username %}">フォローをする</a></h5>
+      {% endif %}
+    </div>
+    <div class="submission-num">
+      <h5>投稿数: {{ boards_num }}</h5>
+    </div>
+    <div class="follower-num">
+      <h5>フォロワー: {{ follower_num }}</h5>
+    </div>
+    <div class="follow-num">
+      <h5>フォロー: {{ follow_num }}</h5>
+    </div>
+  </div>
+</div>
+<div class="submission-wrapper">
+  <div class="flex-submission">
+    {% for board in boards %}
+    <div class="flex-contents">
+      <img src="{{ board.boards_picture.url }}">
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+<style type="text/css">

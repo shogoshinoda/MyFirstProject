@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="departments-wrapper">
+  <div class="departments-content">
+    <div class="department">
+      {{ departments.0 }}
+    </div>
+    <div>
+      <a href="{% url 'questions:lecture_list' 1 %}">{{ subjects.0 }}</a>
+    </div>
+  </div>
+  <div class="departments-content">
+    <div class="department">
+      {{ departments.1 }}
+    </div>
+    <div>
+      <a href="{% url 'questions:lecture_list' 2 %}">{{ subjects.1 }}</a>
+      <a href="{% url 'questions:lecture_list' 3 %}">{{ subjects.2}}</a>
+    </div>
+  </div>
+  <div class="departments-content">
+    <div class="department">
+      {{ departments.2 }}
+    </div>
+    <div>
+      <a href="{% url 'questions:lecture_list' 4 %}">{{ subjects.3 }}</a>
+      <a href="{% url 'questions:lecture_list' 5 %}">{{ subjects.4 }}</a>
+    </div>
+  </div>
+  <div class="departments-content">
+    <div class="department">
+      {{ departments.3 }}
+    </div>
+    <div>
+      <a href="{% url 'questions:lecture_list' 6 %}">{{ subjects.5 }}</a>
+    </div>
+  </div>
+  <div class="departments-content">
+    <div class="department">
+      {{ departments.4 }}
+    </div>
+    <div>
+      <a href="{% url 'questions:lecture_list' 7 %}">{{ subjects.6 }}</a>
+    </div>
+  </div>
+  <div class="departments-content">
+    <div class="department">
+      {{ departments.5 }}
+    </div>
+    <div>
+      <a href="{% url 'questions:lecture_list' 8 %}">{{ subjects.7 }}</a>
+    </div>
+  </div>
+  <div class="departments-content">
+    <div class="department">
+      {{ departments.6 }}
+    </div>
+    <div>
+      <a href="{% url 'questions:lecture_list' 9 %}">{{ subjects.8 }}</a>
+      <a href="{% url 'questions:lecture_list' 10 %}">{{ subjects.9 }}</a>
+      <a href="{% url 'questions:lecture_list' 11 %}">{{ subjects.10 }}</a>
+      <a href="{% url 'questions:lecture_list' 12 %}">{{ subjects.11 }}</a>
+      <br>
+      <a href="{% url 'questions:lecture_list' 13 %}">{{ subjects.12 }}</a>
+      <a href="{% url 'questions:lecture_list' 14 %}">{{ subjects.13 }}</a>
+      <a href="{% url 'questions:lecture_list' 15 %}">{{ subjects.14 }}</a>
+      <a href="{% url 'questions:lecture_list' 16 %}">{{ subjects.15 }}</a>
+      <br>
+      <a href="{% url 'questions:lecture_list' 17 %}">{{ subjects.16 }}</a>
+      <a href="{% url 'questions:lecture_list' 18 %}">{{ subjects.17 }}</a>
+      <a href="{% url 'questions:lecture_list' 19 %}">{{ subjects.18 }}</a>
+      <a href="{% url 'questions:lecture_list' 20 %}">{{ subjects.19 }}</a>
+    </div>
+  </div>
+  <div class="departments-content">
+    <div class="department">
+      {{ departments.7 }}
+    </div>
+    <div>
+      <a href="{% url 'questions:lecture_list' 21 %}">{{ subjects.20 }}</a>
+      <a href="{% url 'questions:lecture_list' 22 %}">{{ subjects.21 }}</a>
+      <a href="{% url 'questions:lecture_list' 23 %}">{{ subjects.22 }}</a>
+    </div>
+  </div>
+  <div class="departments-content">
+    <div class="department">
+      {{ departments.8 }}
+    </div>
+    <div>
+      <a href="{% url 'questions:lecture_list' 24 %}">{{ subjects.23 }}</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

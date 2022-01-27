@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="GET" action="{% url 'questions:lecture_list' subject_id=subject_id %}">
+  <div class="search-wrapper">
+    <input type="text" name="keyword">
+    <button type="submit">検索</button>
+  </div>
+</form>
+<div class="lecture-wrapper">
+  <table>
+    <tr>
+      <th>講義名</th>
+      <th>講義ナンバー</th>
+      <th>担当教員</th>
+    </tr>
+    {% for object in object_list %}
+    <tr>
+      <td>{{ object.lecture }}</td>
+      <td>{{ object.lecture_number }}</td>
+      <td>{{ object.lecture_teacher }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

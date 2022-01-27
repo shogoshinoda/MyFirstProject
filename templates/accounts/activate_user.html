@@ -1,0 +1,11 @@
+{% extends 'accounts/base.html' %}
+{% block content %}
+<div class="container pt-3">
+    <div class="jumbotron">
+    <h4>本登録完了しました。</h4>
+    <p>この度は、このアプリケーションにご登録いただき<br>誠にありがとうございます。ログインを行いアプリをご利用ください。</p>
+    <hr class="my-4">
+    <a class="btn btn-primary btn-lg" href="{% url 'accounts:login' %}">ログインへ</a>
+    </div>
+</div>
+{% endblock %}

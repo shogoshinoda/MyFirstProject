@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% comment %} {% for object in object_list %}
+    <div class="container my-1 border border-dark rounded-lg alert alert-primary">
+        <div class="media m-3 row">
+            <div class="media-body col-3">
+                <a href="{% url 'users:user_home' object.user.username %}"><img src="{{ object.user_picture.url }}" width="40px" height="40px" class="aligm-self-start mr-3 rounded-circle">
+                <p class="h5">{{ object.name }}</p>
+                {{ object.description }}
+                <p class="pl-5"><a href="{% url 'boards:update_board' object.id %}">編集</a></p>
+                <p class="pl-5"><a href="{% url 'boards:delete_board' object.id %}">削除</a></p>
+¥
+{% endfor %} {% endcomment %}
+{% block content %}
+{% load static %}
+<div class="list-wrapper">
+  <div class="btn-wrapper">
+    <a href="{% url 'boards:create_boards' %}">データを追加する</a>
+  </div>
+  <div class="content">
+    {% for object in object_list %}
+    <div class="boards">
+      <div class="board-user">
+        <a href="{% url 'users:user_home' object.user.username %}"><img src="{{ object.user_picture.url }}"></a>
+        <p>{{ object.name}}</p>
+      </div>
+      <div class="board-content">
+        <h4>{{ object.title }}</h4>
+        <p>{{ object.description }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
+
+
+ 
