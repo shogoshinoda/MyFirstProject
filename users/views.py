@@ -12,6 +12,14 @@ from django.urls import reverse_lazy
 
 class UserHomeView(LoginRequiredMixin, TemplateView):
     template_name = 'users/user_home.html'
+
+    def get(self, *args, **kwargs):
+        username = self.kwargs.get('username')
+        try:
+            Users.objects.get(username=username)
+        except:
+            return redirect('boards:board_list')
+        return super().get(*args, **kwargs)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
