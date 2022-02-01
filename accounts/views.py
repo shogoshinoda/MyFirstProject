@@ -84,6 +84,14 @@ class CreateProfileView(LoginRequiredMixin, CreateView):
         initial = super(CreateProfileView, self).get_initial(**kwargs)
         return initial
     
+    # profileが作られていたら更新に飛ばし、作られていなかったらログインに飛ばす
+    def get(self, *args, **kwargs):
+        try:
+            profile = UserProfiles.objects.get(user_id=self.request.user.id)
+            return redirect('accounts:update_profile', profile.id)
+        except:
+            return redirect('accounts:login')
+    
 # Profile更新
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
     
