@@ -61,6 +61,7 @@ class UserLoginForm(forms.Form):
             field.widget.attrs['class'] = 'form-control'
     
 
+# profile作成フォーム
 class ProfileForm(forms.ModelForm):
     picture = forms.FileField(label='プロフィール写真')
     nickname = forms.CharField(label='ニックネーム')
@@ -73,5 +74,24 @@ class ProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # フォームにCSSをあてる
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+
+
+# profile更新フォーム
+class ProfileUpdateForm(forms.ModelForm):
+
+    def save(self, *args, **kwargs):
+        obj = super(ProfileUpdateForm, self).save(commit=False)
+        obj.update_at = datetime.now()
+        obj.save()
+        return obj
+    
+    class Meta:
+        model = UserProfiles
+        fields = ['picture', 'nickname', 'introduction']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'

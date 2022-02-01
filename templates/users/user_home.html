@@ -58,7 +58,7 @@
   <div class="status-container">
     <div class="follow-action">
       {% if "self" == follow %}
-        <h5>　　　　　　</h5>
+        <h5><a href="{% url 'accounts:update_profile' profile.id %}">プロフィール更新</a></h5>
       {% elif "followed" == follow %}
         <h5><a class="" href="{% url 'users:clear_follow' author_username %}">フォローを解除</a></h5>
       {% elif "follow" == follow %}

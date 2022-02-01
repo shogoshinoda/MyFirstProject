@@ -3,16 +3,17 @@ from re import A
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls.base import reverse_lazy
 from .models import UserActivateTokens, UserProfiles, Users
-from .forms import ProfileForm, RegistForm, UserLoginForm
-from django.views.generic.edit import CreateView, FormView
+from .forms import ProfileForm, ProfileUpdateForm, RegistForm, UserLoginForm
+from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic.base import TemplateView, View
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.utils import timezone
+
 
 # ユーザ登録
 class RegistUserView(CreateView):
+
     template_name = 'accounts/regist.html'
     form_class = RegistForm
 
@@ -30,6 +31,7 @@ def activate_user(request, token):
 
 # ユーザログイン
 class UserLoginView(FormView):
+
     template_name = 'accounts/login.html'
     form_class = UserLoginForm
 
@@ -65,6 +67,7 @@ class UserLogoutView(LogoutView):
 
 # プロフィール作成
 class CreateProfileView(LoginRequiredMixin, CreateView):
+
     template_name = 'accounts/create_profile.html'
     model = UserProfiles
     success_url = reverse_lazy('boards:board_list')
@@ -81,3 +84,24 @@ class CreateProfileView(LoginRequiredMixin, CreateView):
         initial = super(CreateProfileView, self).get_initial(**kwargs)
         return initial
     
+# Profile更新
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
+    
+    template_name = 'accounts/update_profile.html'
+    model = UserProfiles
+    form_class = ProfileUpdateForm
+
+    def get_success_url(self):
+        return reverse_lazy('users:user_home', kwargs={'username': self.request.user.username})
+    
+    # 変更するUserがあっているかどうか
+    def get(self, *args, **kwargs):
+        get_profile_id = self.kwargs.get('pk')
+        self_profile = UserProfiles.objects.get(user_id=self.request.user.id)
+        print(self_profile.id)
+        print(get_profile_id)
+        if get_profile_id == self_profile.id:
+            return super().get(*args, **kwargs)
+        else:
+            return redirect('users:user_home', self.request.user.username)
+
