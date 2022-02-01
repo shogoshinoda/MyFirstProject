@@ -1,13 +1,14 @@
 from dataclasses import field
 from django.contrib import admin
 from .models import (
-    Department, Lectures, Subjects
+    Department, Lectures, Subjects, Questions
 )
 
 
 admin.site.register(Department)
 # admin.site.register(Subjects)
 # admin.site.register(Lectures)
+admin.site.register(Questions)
 
 @admin.register(Subjects)
 class SubjectAdmin(admin.ModelAdmin):
@@ -23,8 +24,8 @@ class SubjectAdmin(admin.ModelAdmin):
 @admin.register(Lectures)
 class LectureAdmin(admin.ModelAdmin):
 
-    fields = ('lecture', 'lecture_number', 'lecture_teacher', 'subject')
-    list_display = ('lecture', 'lecture_number', 'lecture_teacher', 'subject')
+    fields = ('id', 'lecture', 'lecture_number', 'lecture_teacher', 'subject')
+    list_display = ('id', 'lecture', 'lecture_number', 'lecture_teacher', 'subject')
     list_display_links = ('lecture',)
     search_fields = ('lecture', 'lecture_number', 'lecture_teacher')
     list_filter = ('subject',)

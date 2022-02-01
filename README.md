@@ -4,6 +4,7 @@ MyFirstProject
 
 # 準備
 
+python8.8
 djnago.3.2.9
 
 # 使用法

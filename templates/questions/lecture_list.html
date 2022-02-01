@@ -15,7 +15,7 @@
     </tr>
     {% for object in object_list %}
     <tr>
-      <td>{{ object.lecture }}</td>
+      <td><a href="{% url 'questions:question_list' object.id %}">{{ object.lecture }}</a></td>
       <td>{{ object.lecture_number }}</td>
       <td>{{ object.lecture_teacher }}</td>
     </tr>

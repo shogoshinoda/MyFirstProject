@@ -43,13 +43,15 @@ class Lectures(models.Model):
     
 #　問題
 class Questions(models.Model):
-    quesiton = models.TextField()
+    question = models.FileField(upload_to='questions/')
     lecture = models.ForeignKey(
-        Lectures, on_delete=models.CASCADE
+        Lectures,
+        on_delete=models.CASCADE,
+        limit_choices_to={'lecture_number':311502}
     )
 
     class Meta:
         db_table = 'questions'
     
     def __str__(self):
-        return self.lecture
+        return str(self.lecture)

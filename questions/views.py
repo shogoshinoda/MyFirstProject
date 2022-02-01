@@ -59,5 +59,16 @@ class LectureListView(LoginRequiredMixin, ListView):
         return context
 
 
+class QuestionListView(LoginRequiredMixin, ListView):
+
+    model = Questions
+    template_name = 'questions/question_list.html'
+    
+    def get_queryset(self):
+        lecture_id = self.kwargs['lecture_id']
+        queryset = Questions.objects.filter(lecture_id=lecture_id)
+        return queryset
+
+
 
 
