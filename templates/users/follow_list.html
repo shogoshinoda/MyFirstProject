@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for follow_user in follow_users %}
+<div>
+  <h3>{{ follow_user.username }}</h3>
+</div>
+{% endfor %}
+{% endblock %}

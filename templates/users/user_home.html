@@ -69,10 +69,10 @@
       <h5>投稿数: {{ boards_num }}</h5>
     </div>
     <div class="follower-num">
-      <h5>フォロワー: {{ follower_num }}</h5>
+      <h5><a href="{% url 'users:follower_list' author_username%}">フォロワー: {{ follower_num }}</a></h5>
     </div>
     <div class="follow-num">
-      <h5>フォロー: {{ follow_num }}</h5>
+      <h5><a href="{% url 'users:follow_list' author_username%}">フォロー: {{ follow_num }}</a></h5>
     </div>
   </div>
 </div>

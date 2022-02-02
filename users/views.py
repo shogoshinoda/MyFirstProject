@@ -63,3 +63,46 @@ def clear_follow(request, username):
     clear_follow = FollowFollowerUser.objects.filter(follow_user=self_user.id, follower_user=user.id)
     clear_follow.delete()
     return redirect('users:user_home', username)
+
+
+class FollowListView(LoginRequiredMixin, TemplateView):
+
+    template_name = 'users/follow_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        username = self.kwargs.get('username')
+        user = Users.objects.get(username=username)
+        follow_users_id = FollowFollowerUser.objects.filter(follow_user_id=user.id)
+        follow_users = []
+        for follow_user_id in follow_users_id:
+            try:
+                follow_user = Users.objects.get(id=follow_user_id.follower_user)
+            except:
+                pass
+            if follow_user:
+                follow_users.append(follow_user)
+        context['follow_users'] = follow_users
+        return context
+
+
+class FollowerListView(LoginRequiredMixin, TemplateView):
+
+    template_name = 'users/follower_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        username = self.kwargs.get('username')
+        user = Users.objects.get(username=username)
+        follower_users_id = FollowFollowerUser.objects.filter(follower_user=user.id)
+        follower_users = []
+        for follower_user_id in follower_users_id:
+            print(follower_user_id)
+            try:
+                follower_user = Users.objects.get(id=follower_user_id.follow_user_id)
+            except:
+                pass
+            if follower_user:
+                follower_users.append(follower_user)
+        context['follower_users'] = follower_users
+        return context
