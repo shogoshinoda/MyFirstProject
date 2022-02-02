@@ -1,0 +1,115 @@
+from datetime import datetime
+from re import A
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls.base import reverse_lazy
+from .models import UserActivateTokens, UserProfiles, Users
+from .forms import ProfileForm, ProfileUpdateForm, RegistForm, UserLoginForm
+from django.views.generic.edit import CreateView, FormView, UpdateView
+from django.views.generic.base import TemplateView, View
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+# ユーザ登録
+class RegistUserView(CreateView):
+
+    template_name = 'accounts/regist.html'
+    form_class = RegistForm
+
+# ユーザ登録確認メール送信完了
+class ConfirmEmailView(TemplateView):
+    template_name = 'accounts/confirm_email.html'
+
+# ユーザアクティベイト
+def activate_user(request, token):
+    user_activate_token = UserActivateTokens.objects.activate_user_by_token(token)
+    return render(
+        request, 'accounts/activate_user.html'
+    )
+
+
+# ユーザログイン
+class UserLoginView(FormView):
+
+    template_name = 'accounts/login.html'
+    form_class = UserLoginForm
+
+    def post(self, request, *args, **kwargs):
+        email = request.POST['email']
+        password = request.POST['password']
+        user = authenticate(email=email, password=password)
+        next_url = request.POST.get('next')
+        if user is not None and user.is_active:
+            login(request, user)
+        else:
+            raise ValueError('メルアドレスもしくはパスワードがまちがっています')
+        # ログインしないといけない画面に行ってしまった時そのページに戻るよう
+        if next_url:
+            return redirect(next_url)
+        # プロフィールが存在した時ホーム、存在しない時プロフィール作成画面
+        try:
+            UserProfiles.objects.get(user_id=self.request.user.id)
+            return redirect('boards:board_list')
+        except:
+            return redirect('accounts:create_profile')
+
+    def form_valid(self, form):
+        remember = form.cleaned_data['remember']
+        if remember:
+            self.request.session.set_expiry(10368000)# ログイン状態保持にチェックがある場合120日ログイン状態保持
+        return super().form_valid(form)
+
+
+# ログアウト
+class UserLogoutView(LogoutView):
+    pass
+
+# プロフィール作成
+class CreateProfileView(LoginRequiredMixin, CreateView):
+
+    template_name = 'accounts/create_profile.html'
+    model = UserProfiles
+    success_url = reverse_lazy('boards:board_list')
+    fields = ['picture', 'nickname', 'introduction']
+
+    def form_valid(self, form):
+        form.instance.create_at = datetime.now()
+        form.instance.update_at = datetime.now()
+        user = get_object_or_404(Users, pk=self.request.user.id)
+        form.instance.user = user
+        return super(CreateProfileView, self).form_valid(form)
+
+    def get_initial(self, **kwargs):
+        initial = super(CreateProfileView, self).get_initial(**kwargs)
+        return initial
+    
+    # profileが作られていたら更新に飛ばし、作られていなかったらログインに飛ばす
+    def get(self, *args, **kwargs):
+        try:
+            profile = UserProfiles.objects.get(user_id=self.request.user.id)
+            return redirect('accounts:update_profile', profile.id)
+        except:
+            return redirect('accounts:login')
+    
+# Profile更新
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
+    
+    template_name = 'accounts/update_profile.html'
+    model = UserProfiles
+    form_class = ProfileUpdateForm
+
+    def get_success_url(self):
+        return reverse_lazy('users:user_home', kwargs={'username': self.request.user.username})
+    
+    # 変更するUserがあっているかどうか
+    def get(self, *args, **kwargs):
+        get_profile_id = self.kwargs.get('pk')
+        self_profile = UserProfiles.objects.get(user_id=self.request.user.id)
+        print(self_profile.id)
+        print(get_profile_id)
+        if get_profile_id == self_profile.id:
+            return super().get(*args, **kwargs)
+        else:
+            return redirect('users:user_home', self.request.user.username)
+
